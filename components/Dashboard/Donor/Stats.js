@@ -26,12 +26,12 @@ const Stats = ({ statsDetails = {} }) => {
         },
         {
             label: "Packets",
-            value: statsDetails.Kg ?? 0,
+            value: statsDetails.Packets ?? 0,
             icon: "🥡",
         },
         {
             label: "Kilograms",
-            value: statsDetails.Packets ?? 0,
+            value: statsDetails.Kg ?? 0,
             icon: "⚖️",
         },
         {

@@ -51,9 +51,7 @@ export default function Login() {
                 password: ""
             });
 
-            setTimeout(() => {
-                router.push("/dashboard");
-            }, 1500);
+            router.push("/dashboard");
 
         } catch (error) {
             toast.error("Something went wrong. Please try again.");

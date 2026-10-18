@@ -172,10 +172,8 @@ export async function GET() {
     SUM(CASE WHEN unit = 'Litres' THEN quantity ELSE 0 END) AS Litres
 FROM donations
 WHERE donor_id = ?
-    AND status IN ('AVAILABLE', 'CLAIMED', 'PICKED_UP');  
+    AND status IN ('DELIVERED');  
         `, [user_id])
-
-
 
         //Active donations
         const [activeDonations] = await db.query(`SELECT * FROM donations WHERE donor_id = ? AND status IN('AVAILABLE', 'CLAIMED', 'PICKED_UP') ORDER BY created_at DESC;`, [user_id])

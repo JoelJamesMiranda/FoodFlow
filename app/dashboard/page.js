@@ -9,32 +9,32 @@ import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  
+
     return (
-    <main className="min-h-screen bg-[#F7FAF7] text-[#17211A]">
-      <ToastContainer />
+        <main className="min-h-screen bg-[#F7FAF7] text-[#17211A]">
+            <ToastContainer />
 
 
-      {/* MAIN CONTENT */}
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+            {/* MAIN CONTENT */}
+            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
 
-        {/* Welcome */}
-        <Welcome />
-
-
-        {/* ACTION CARDS */}
-        <Action />
+                {/* Welcome */}
+                <Welcome />
 
 
-        {/* IMPACT SECTION */}
-        <Impact />
+                {/* ACTION CARDS */}
+                <Action />
 
 
-        {/* RECENT ACTIVITY */}
-        <Recents />
+                {/* IMPACT SECTION */}
+                <Impact />
 
-      </div>
 
-    </main>
-  );
+                {/* RECENT ACTIVITY */}
+                <Recents />
+
+            </div>
+
+        </main>
+    );
 }
