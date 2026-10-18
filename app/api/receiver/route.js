@@ -60,22 +60,24 @@ export async function GET() {
         const receiverLng = receiverResult[0].longitude;
 
         const [availableDonation] = await db.query(`
-            SELECT 
-            donations.id ,
-             users.id AS users_id ,
-             users.name as donor,
-              donations.foodName,
-               donations.category, 
-               donations.quantity, 
-               donations.bestBeforeDate, 
-               donations.notes AS notes,
-               donations.image,
-               addresses.latitude, 
-               addresses.longitude 
-               FROM users 
-               INNER JOIN donations 
-               INNER JOIN addresses 
-               where users.id = donations.donor_id AND users.id = addresses.userId AND status = "AVAILABLE" 
+           SELECT
+    donations.id,
+    users.id AS users_id,
+    users.name AS donor,
+    donations.foodName,
+    donations.category,
+    donations.quantity,
+    donations.bestBeforeDate,
+    donations.notes AS notes,
+    donations.image,
+    addresses.latitude,
+    addresses.longitude
+FROM users
+INNER JOIN donations
+    ON users.id = donations.donor_id
+INNER JOIN addresses
+    ON users.id = addresses.userId
+WHERE donations.status = 'AVAILABLE';
             `)
 
         const [myRequests] = await db.query(`SELECT 
