@@ -50,7 +50,7 @@ export async function POST(request) {
         }
 
         const [userid] = await db.query(
-            "SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()",
+            `SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()`,
             [token]
         );
 
@@ -150,7 +150,7 @@ export async function GET() {
         }
 
         const [userid] = await db.query(
-            "SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()",
+            `SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()`,
             [token]
         );
 
@@ -178,7 +178,7 @@ WHERE donor_id = ?
 
 
         //Active donations
-        const [activeDonations] = await db.query(`SELECT * FROM donations WHERE donor_id = ? AND status IN("AVAILABLE", "CLAIMED", "PICKED_UP") ORDER BY created_at DESC;`, [user_id])
+        const [activeDonations] = await db.query(`SELECT * FROM donations WHERE donor_id = ? AND status IN('AVAILABLE', 'CLAIMED', 'PICKED_UP') ORDER BY created_at DESC;`, [user_id])
 
         return Response.json(
             {

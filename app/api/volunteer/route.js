@@ -32,7 +32,7 @@ export async function GET() {
         }
 
         const [userid] = await db.query(
-            "SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()",
+            `SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()`,
             [token]
         );
 
@@ -243,7 +243,7 @@ export async function PATCH(request) {
         }
 
         const [userid] = await db.query(
-            "SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()",
+            `SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()`,
             [token]
         );
 

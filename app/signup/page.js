@@ -2,11 +2,11 @@
 import Link from "next/link";
 import AuthLayout from "@/components/Auth/AuthLayout";
 import { useState } from "react";
-import { toast , ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 export default function Signup() {
-
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const [form, setForm] = useState({
@@ -19,9 +19,15 @@ export default function Signup() {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    const handleSubmit = async () => {
-        const response = await fetch("/api/auth/sign-in",
-            {
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (loading) return;
+
+        setLoading(true);
+
+        try {
+            const response = await fetch("/api/auth/sign-in", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -29,28 +35,34 @@ export default function Signup() {
                     email: form.email,
                     password: form.password
                 })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                toast.error(result.error || "Signup failed");
+                return;
             }
-        )
-        const result = await response.json()
 
-        if (!response.ok) {
-            toast(result.error)
-            return
-        }
+            toast.success(result.message);
 
-        if (response.ok) {
-            toast(result.message)
             setForm({
                 name: "",
                 email: "",
                 password: ""
-            })
+            });
 
             setTimeout(() => {
-                router.push("/dashboard")
+                router.push("/dashboard");
             }, 1500);
+
+        } catch (error) {
+            toast.error("Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
+
 
     console.log(form)
 
@@ -61,7 +73,7 @@ export default function Signup() {
         >
             <ToastContainer />
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
 
                 {/* Name */}
                 <div>
@@ -113,29 +125,40 @@ export default function Signup() {
                     />
                 </div>
 
-
-                {/* Confirm password
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            Confirm password
-          </label>
-
-          <input
-            type="password"
-            placeholder="Confirm your password"
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#16A34A] focus:bg-white focus:ring-4 focus:ring-green-100"
-          />
-        </div> */}
-
-
                 {/* Signup */}
+
                 <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="w-full rounded-xl bg-[#16A34A] py-3.5 font-semibold text-white shadow-lg shadow-green-100 transition hover:bg-[#15803D] hover:shadow-xl hover:cursor-pointer"
+                    type="submit"
+                    disabled={loading}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#16A34A] py-3.5 font-semibold text-white shadow-lg shadow-green-100 transition hover:bg-[#15803D] hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                    Create account
+                    {loading && (
+                        <svg
+                            className="h-5 w-5 animate-spin"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                            />
+
+                            <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
+                        </svg>
+                    )}
+
+                    {loading ? "Signing up..." : "Create account"}
                 </button>
+
 
             </form>
 

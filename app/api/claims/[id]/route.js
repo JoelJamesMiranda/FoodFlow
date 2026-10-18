@@ -41,7 +41,7 @@ export async function POST(request, { params }) {
 
         const user_id = userid[0].user_id;
 
-        await db.query('INSERT INTO claims (donation_id, receiver_id, distance, status) VALUE ( ?, ? , ?, "PENDING")', [donation.id, user_id, data.distance,])
+        await db.query(`INSERT INTO claims (donation_id, receiver_id, distance, status) VALUE ( ?, ? , ?, 'PENDING')`, [donation.id, user_id, data.distance,])
 
         await db.query(`UPDATE donations SET status = 'CLAIMED' WHERE id = ? `, [donation.id])
 

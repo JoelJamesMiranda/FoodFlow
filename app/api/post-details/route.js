@@ -19,7 +19,7 @@ export async function PATCH(request) {
 
         // Getting user_id
         const [userid] = await db.query(
-            "SELECT user_id FROM sessions WHERE session_token = ?",
+            `SELECT user_id FROM sessions WHERE session_token = ?`,
             [token]
         );
 
@@ -77,7 +77,7 @@ export async function PATCH(request) {
         const [rows] = await db.query("SELECT * FROM addresses WHERE userId = ? ", [userId])
 
         if(rows.length === 0){
-            await db.query("INSERT INTO addresses (userId, houseNumber, street, area, city, state, pincode, landmark, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ? ,?) ", [
+            await db.query(`INSERT INTO addresses (userId, houseNumber, street, area, city, state, pincode, landmark, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ? ,?) `, [
                 userId, body.houseNumber, body.street, body.area, body.city, body.state, body.pincode, body.landmark, latitude, longitude
             ])
             return Response.json({
@@ -87,10 +87,10 @@ export async function PATCH(request) {
         }
         
         //update ADDRESSES TABLE
-        await db.query("UPDATE addresses SET houseNumber = ?, street = ? , area = ? , city = ? , state = ? , pincode = ? , landmark = ?, latitude = ?, longitude = ? WHERE userId = ?" , [body.houseNumber, body.street, body.area, body.city, body.state, body.pincode, body.landmark, latitude, longitude,userId])
+        await db.query(`UPDATE addresses SET houseNumber = ?, street = ? , area = ? , city = ? , state = ? , pincode = ? , landmark = ?, latitude = ?, longitude = ? WHERE userId = ?` , [body.houseNumber, body.street, body.area, body.city, body.state, body.pincode, body.landmark, latitude, longitude,userId])
 
         //update USERS TABLE
-        await db.query("UPDATE users SET name = ?, gender = ? WHERE id = ?", [body.name, body.gender, userId])
+        await db.query(`UPDATE users SET name = ?, gender = ? WHERE id = ?`, [body.name, body.gender, userId])
 
         return Response.json({
             success: true,

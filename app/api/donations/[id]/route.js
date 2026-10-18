@@ -16,7 +16,7 @@ export async function PATCH(request , {params}) {
         }
 
         const [userid] = await db.query(
-            "SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()",
+            `SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()`,
             [token]
         );
 
@@ -29,7 +29,7 @@ export async function PATCH(request , {params}) {
 
         const user_id = userid[0].user_id;
 
-        await db.query("UPDATE donations SET status = 'CANCELLED' WHERE donor_id = ? AND id = ? ", [user_id , id])
+        await db.query(`UPDATE donations SET status = 'CANCELLED' WHERE donor_id = ? AND id = ?     ₹1`, [user_id , id])
 
         return Response.json({
             success: true,

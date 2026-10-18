@@ -3,9 +3,9 @@ import { cookies } from "next/headers";
 
 export async function GET() {
     try {
-        await db.query("UPDATE claims JOIN donations ON claims.donation_id = donations.id SET claims.status = 'CANCELLED' WHERE TIMESTAMP(donations.bestBeforeDate, donations.bestBeforeTime) < NOW() AND donations.status = 'CLAIMED'")
+        await db.query(`UPDATE claims JOIN donations ON claims.donation_id = donations.id SET claims.status = 'CANCELLED' WHERE TIMESTAMP(donations.bestBeforeDate, donations.bestBeforeTime) < NOW() AND donations.status = 'CLAIMED' `)
 
-        await db.query("UPDATE donations SET status = 'EXPIRED' WHERE CONCAT(bestBeforeDate, ' ', bestBeforeTime) < NOW() AND status = 'AVAILABLE' ")
+        await db.query(`UPDATE donations SET status = 'EXPIRED' WHERE CONCAT(bestBeforeDate, ' ', bestBeforeTime) < NOW() AND status = 'AVAILABLE' `)
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; // Earth's radius in km
@@ -35,7 +35,7 @@ export async function GET() {
         }
 
         const [userid] = await db.query(
-            "SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()",
+            `SELECT user_id FROM sessions WHERE session_token = ? AND expires_at > NOW()`,
             [token]
         );
 
@@ -49,12 +49,12 @@ export async function GET() {
         const user_id = userid[0].user_id;
 
         //Total Donations
-        const [stateResult] = await db.query("SELECT state FROM addresses WHERE userId = ?", [user_id]);
+        const [stateResult] = await db.query(`SELECT state FROM addresses WHERE userId = ?`, [user_id]);
 
         const addressPresent = stateResult.length > 0 ? stateResult[0].state : null;
 
         //Donations Cards
-        const [receiverResult] = await db.query("SELECT latitude, longitude FROM addresses WHERE userId = ?", [user_id]);
+        const [receiverResult] = await db.query(`SELECT latitude, longitude FROM addresses WHERE userId = ?`, [user_id]);
 
         const receiverLat = receiverResult[0].latitude;
         const receiverLng = receiverResult[0].longitude;

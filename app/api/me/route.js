@@ -6,7 +6,7 @@ export async function GET() {
         const cookieStore = await cookies();
         const token = cookieStore.get("session_token")?.value
 
-        const [rows] = await db.query("SELECT * FROM sessions WHERE session_token = ? ", [token])
+        const [rows] = await db.query(`SELECT * FROM sessions WHERE session_token = ? `, [token])
 
         if (rows.length === 0) {
             return Response.json(

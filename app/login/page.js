@@ -8,6 +8,7 @@ import AuthLayout from '@/components/Auth/AuthLayout';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
+    const [loading, setLoading] = useState(false);
 
     const router = useRouter();
 
@@ -22,36 +23,45 @@ export default function Login() {
         })
     }
 
-    const handleSubmit = async () => {
-        const response = await fetch("/api/auth/login",
-            {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     email: form.email,
                     password: form.password
                 })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                toast(result.error);
+                return;
             }
-        )
-        const result = await response.json()
 
-        if (!response.ok) {
-            toast(result.error)
-            return
-        }
+            toast(result.message);
 
-        if (response.ok) {
-            toast(result.message)
             setForm({
                 email: "",
                 password: ""
-            })
+            });
 
             setTimeout(() => {
-                router.push("/dashboard")
+                router.push("/dashboard");
             }, 1500);
+
+        } catch (error) {
+            toast.error("Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
+
 
     console.log("Login - ", form)
 
@@ -62,7 +72,7 @@ export default function Login() {
         >
             <ToastContainer />
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
 
                 {/* Email */}
                 <div>
@@ -108,13 +118,19 @@ export default function Login() {
 
 
                 {/* Login */}
+
                 <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="hover:cursor-pointer w-full rounded-xl bg-[#16A34A] py-3.5 font-semibold text-white shadow-lg shadow-green-100 transition hover:bg-[#15803D] hover:shadow-xl"
+                    type="submit"
+                    disabled={loading}
+                    className="cursor-pointer flex w-full items-center justify-center gap-2 rounded-xl bg-[#16A34A] py-3.5 font-semibold text-white shadow-lg shadow-green-100 transition hover:bg-[#15803D] hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                    Log in
+                    {loading && (
+                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    )}
+
+                    {loading ? "Logging in..." : "Log in"}
                 </button>
+
 
             </form>
 
