@@ -89,7 +89,7 @@ Add any additional variables required by your application, such as your session 
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000](https://food-flow-otg4ygr5z-joeljamesmirandas-projects.vercel.app/)) in your browser.
 
 ## 🌱 How It Works
 
