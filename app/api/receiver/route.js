@@ -110,11 +110,13 @@ WHERE donations.status = 'AVAILABLE';
             };
         });
 
+        const [totalDonations] = await db.query(`SELECT COUNT(*) AS availableDonations FROM donations WHERE status = 'AVAILABLE'`) 
         return Response.json(
             {
                 addressPresent: addressPresent,
                 availableFood: donationsWithDistance,
                 myRequests: myRequests,
+                totalDonations: totalDonations[0],
                 message: "Fetched Receiver Data successfully"
             }
         );

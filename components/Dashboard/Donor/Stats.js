@@ -1,17 +1,17 @@
 import React from "react";
 
-const Stats = ({ statsDetails = {} }) => {
+const Stats = ({ statsDetails = {} ,totalDonation ,successfullDeliveries}) => {
     const stats = [
         {
             label: "Total Donations",
-            value: statsDetails.totalDonation ?? 0,
+            value: totalDonation ?? 0,
             icon: "📦",
             iconBg: "bg-green-100",
             accent: "text-green-700",
         },
         {
             label: "Successful Deliveries",
-            value: statsDetails.successfulDeliveries ?? 0,
+            value: successfullDeliveries ?? 0,
             icon: "🚚",
             iconBg: "bg-blue-100",
             accent: "text-blue-700",

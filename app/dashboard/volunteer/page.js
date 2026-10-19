@@ -11,6 +11,7 @@ import Footer from "@/components/home/Footer";
 
 
 export default function VolunteerDashboard() {
+    const [isLoading, setisLoading] = useState(true)
     const [locationEnabled, setLocationEnabled] = useState(false);
     const [activeTab, setActiveTab] = useState("available");
     const [deliveryHistory, setDeliveryHistory] = useState([])
@@ -107,7 +108,18 @@ export default function VolunteerDashboard() {
 
 
     useEffect(() => {
-        getData();
+        const fetchVolunteerData = async()=>{
+            try{
+                await Promise.all([
+                    getData()
+                ]);
+            }finally{
+                setisLoading(false)
+            }
+        }
+
+        fetchVolunteerData();
+
     }, [getData]);
 
     useEffect(() => {
@@ -134,6 +146,15 @@ export default function VolunteerDashboard() {
         await getData();
     };
 
+    if(isLoading){
+        return (<div className="flex min-h-[70vh] flex-col items-center justify-center gap-4">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-200 border-t-[#16A34A]" />
+
+                    <p className="text-lg font-medium text-[#17211A]">
+                        Fetching data...
+                    </p>
+                </div>)
+    }
     return (
         <main className="min-h-screen bg-[#F7FAF7] text-[#17211A]">
 

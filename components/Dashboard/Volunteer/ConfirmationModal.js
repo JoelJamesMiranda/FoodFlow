@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ConfirmationModal = ({ selectedDelivery, setSelectedDelivery, handleDelivery }) => {
+const ConfirmationModal = ({ selectedDelivery, setSelectedDelivery, handleDelivery, isConfirming }) => {
 
     return (
         <div
@@ -306,7 +306,7 @@ const ConfirmationModal = ({ selectedDelivery, setSelectedDelivery, handleDelive
                             onClick={handleDelivery}
                             className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition hover:cursor-pointer"
                         >
-                            Confirm Delivery
+                            {isConfirming ? "Confirming..." : "Confirm Delivery"}
                         </button>
 
                     </div>

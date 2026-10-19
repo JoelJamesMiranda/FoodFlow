@@ -11,6 +11,7 @@ import MissingAddress from "@/components/Dashboard/MissingAddress";
 
 export default function ReceiverDashboard() {
 
+    const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("available");
     const [address, setaddress] = useState(null);
     const [requests, setRequests] = useState([]);
@@ -43,31 +44,54 @@ export default function ReceiverDashboard() {
     }, []);
 
     useEffect(() => {
-        getData();
+        const fetchReceverData = async () => {
+            try {
+                await Promise.all([
+                    getData(),
+                ]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchReceverData();
 
         const interval = setInterval(() => {
-            getData();
+            fetchReceverData();
         }, 20000);
 
         return () => clearInterval(interval);
-    }, [getData]);
+    }, []);
 
+    
     // Pagination calculations
     const totalPages = Math.ceil(
         availableFood.length / itemsPerPage
     );
-
+    
     const startIndex = (currentPage - 1) * itemsPerPage;
-
+    
     const currentFood = availableFood.slice(
         startIndex,
         startIndex + itemsPerPage
     );
-
+    
     // Reset to first page when food list changes
     useEffect(() => {
         setCurrentPage(1);
     }, [availableFood.length]);
+    
+    
+    if(isLoading){
+        return (<div className="flex min-h-[70vh] flex-col items-center justify-center gap-4">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-200 border-t-[#16A34A]" />
+
+                    <p className="text-lg font-medium text-[#17211A]">
+                        Fetching data...
+                    </p>
+                </div>)
+    }
+    
 
     return (
         <main className="min-h-screen bg-[#F7FAF7] text-[#17211A]">

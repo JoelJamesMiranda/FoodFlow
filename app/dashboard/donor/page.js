@@ -12,7 +12,10 @@ import { useEffect, useState } from "react";
 
 export default function DonorDashboard() {
 
+    const [isLoading, setIsLoading] = useState(true);
     const [donations, setDonations] = useState([]);
+    const [totalDonation, setTotalDonation] = useState()
+    const [successfullDeliveries, setSuccessfullDeliveries] = useState()
     const [stats, setStats] = useState()
     const [address, setAddress] = useState(null)
 
@@ -40,54 +43,68 @@ export default function DonorDashboard() {
             return;
         }
 
-        setStats(result.stats)
-        setDonations(result.activeDonations)
+        setStats(result.stats);
+        setSuccessfullDeliveries(result.successfulDeliveries.successfullDeliveries)
+        setTotalDonation(result.totalDonation.totolDonations);
+        setDonations(result.activeDonations);
     }
 
     useEffect(() => {
-        getData();
-        getReceiverData();
-    }, [])
+        const fetchDashboardData = async () => {
+            try {
+                await Promise.all([
+                    getData(),
+                    getReceiverData()
+                ]);
+            } catch (error) {
+                console.error("Error fetching dashboard data:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
 
 
     return (
         <main className="min-h-screen bg-[#F7FAF7] text-[#17211A]">
 
-            {address === null ?
-                (
-                    <MissingAddress />
-                ) :
+            {isLoading ? (
+                <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-200 border-t-[#16A34A]" />
 
-                (<>
-                    {/* CONTENT */}
-                    < div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+                    <p className="text-lg font-medium text-[#17211A]">
+                        Fetching data...
+                    </p>
+                </div>
+            ) : address === null || address === false ? (
+                <MissingAddress />
+            ) : (
+                <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+                    <Header />
 
-                        {/* HEADER */}
-                        <Header />
+                    <Stats
+                        statsDetails={stats}
+                        totalDonation={totalDonation}
+                        successfullDeliveries={successfullDeliveries}
+                    />
 
+                    <Active
+                        donations={donations}
+                        refreshDonation={getData}
+                    />
 
-                        {/* STATS */}
-                        <Stats statsDetails={stats} />
+                    <Working />
 
+                    <Recents />
+                </div>
+            )}
 
-                        {/* ACTIVE DONATION */}
-                        <Active donations={donations} refreshDonation={getData} />
-
-
-                        {/* HOW IT WORKS */}
-                        <Working />
-
-
-                        {/* DONATION HISTORY */}
-                        <Recents />
-
-                    </div>
-                </>
-                )
+            {
+                !isLoading && <Footer /> 
             }
 
-
-            <Footer />
 
         </main >
     );

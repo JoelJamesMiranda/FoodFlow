@@ -90,7 +90,11 @@ export async function PATCH(request) {
         await db.query(`UPDATE addresses SET houseNumber = ?, street = ? , area = ? , city = ? , state = ? , pincode = ? , landmark = ?, latitude = ?, longitude = ? WHERE userId = ?` , [body.houseNumber, body.street, body.area, body.city, body.state, body.pincode, body.landmark, latitude, longitude,userId])
 
         //update USERS TABLE
-        await db.query(`UPDATE users SET name = ?, gender = ? WHERE id = ?`, [body.name, body.gender, userId])
+        var gender = body.gender ;
+        if(body.gender === ""){
+            gender = null
+        }
+        await db.query(`UPDATE users SET name = ?, gender = ? WHERE id = ?`, [body.name, gender, userId])
 
         return Response.json({
             success: true,

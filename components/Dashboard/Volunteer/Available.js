@@ -10,6 +10,7 @@ const Available = ({ availableDeliveries = [], activeDelivery }) => {
     const [imageErrors, setImageErrors] = useState({});
     const [showAllDeliveries, setShowAllDeliveries] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isConfirming, setIsConfirming] = useState(false)
 
     const INITIAL_DELIVERIES = 4;
 
@@ -21,6 +22,7 @@ const Available = ({ availableDeliveries = [], activeDelivery }) => {
         if (!selectedDelivery || isSubmitting) return;
 
         setIsSubmitting(true);
+        setIsConfirming(true)
 
         try {
             const response = await fetch("/api/delivery", {
@@ -46,6 +48,7 @@ const Available = ({ availableDeliveries = [], activeDelivery }) => {
             toast.error("Something went wrong. Please try again.");
         } finally {
             setIsSubmitting(false);
+            setIsConfirming(false);
         }
     };
 
@@ -365,6 +368,7 @@ const Available = ({ availableDeliveries = [], activeDelivery }) => {
                     selectedDelivery={selectedDelivery}
                     setSelectedDelivery={setSelectedDelivery}
                     handleDelivery={handleDelivery}
+                    isConfirming={isConfirming}
                 />
             )}
         </section>

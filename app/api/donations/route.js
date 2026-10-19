@@ -175,12 +175,18 @@ WHERE donor_id = ?
     AND status IN ('DELIVERED');  
         `, [user_id])
 
+        const [totalDonation] = await db.query(`select count(*) AS totolDonations from donations where donor_id = ?` ,[user_id])
+
+        const [successfulDeliveries] = await db.query(`select count(*) AS successfullDeliveries from donations where donor_id = ? and status = 'DELIVERED'` ,[user_id])
+
         //Active donations
         const [activeDonations] = await db.query(`SELECT * FROM donations WHERE donor_id = ? AND status IN('AVAILABLE', 'CLAIMED', 'PICKED_UP') ORDER BY created_at DESC;`, [user_id])
 
         return Response.json(
             {
                 stats: stats[0],
+                totalDonation: totalDonation[0],
+                successfulDeliveries: successfulDeliveries[0],
                 activeDonations: activeDonations,
                 message: "Fetched Donation Data"
             }
