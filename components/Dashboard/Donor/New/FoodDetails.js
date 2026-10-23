@@ -3,7 +3,6 @@ import React from 'react'
 import { useState } from 'react';
 
 const FoodDetails = ({ form, handleChange , foodImage, setFoodImage}) => {
-    console.log(foodImage)
 
     return (
         <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">

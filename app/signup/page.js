@@ -63,9 +63,6 @@ export default function Signup() {
         }
     };
 
-
-    console.log(form)
-
     return (
         <AuthLayout
             title="Join FoodFlow"

@@ -132,15 +132,7 @@ export async function POST(request) {
             );
         }
 
-        console.log("Volunteer:", {
-            latitude: volunteerLocation.latitude,
-            longitude: volunteerLocation.longitude
-        });
 
-        console.log("Donor:", {
-            latitude: destinationLat,
-            longitude: destinationLong
-        });
 
         const route = mapboxData.routes[0];
 

@@ -38,7 +38,6 @@ const History = ({ deliveries = [], setActiveTab }) => {
             </div>
         );
     }
-    console.log(deliveries)
 
     return (
         <section className="min-w-0 space-y-5">

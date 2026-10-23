@@ -28,8 +28,6 @@ export async function POST(request, { params }) {
             );
         }
 
-        console.log("Donation Id : ", donation.id)
-
         const [row] = await db.query(`SELECT status FROM donations where id = ?`, [donation.id])
 
         if (row[0].status === "CLAIMED") {

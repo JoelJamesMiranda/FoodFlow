@@ -45,8 +45,6 @@ export async function POST(request) {
                 { status: 403 }
             );
         }
-
-        console.log(body)
         
         await db.query(`UPDATE claims SET status = 'VOLUNTEER_ASSIGNED' WHERE id = ? `, [body.claim_id])
 

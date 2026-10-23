@@ -43,8 +43,6 @@ export default function VolunteerDashboard() {
         }
     }, []);
 
-    console.log(currentDeliveryDetials)
-
     const updateVolunteerLocation = useCallback(() => {
         if (!navigator.geolocation) {
             return;

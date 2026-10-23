@@ -15,8 +15,6 @@ export async function GET() {
             );
         }
 
-        console.log(rows[0]);
-
         return Response.json(
                 {message: rows[0].user_id},
             );

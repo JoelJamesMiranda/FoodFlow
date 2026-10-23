@@ -68,8 +68,6 @@ const ActiveDelivery = ({
         };
     }, [currentDeliveryDetials?.id]);
 
-    console.log("routeInfo", routeInfo)
-
     const handlePickedUp = async () => {
 
         setLoading(true);

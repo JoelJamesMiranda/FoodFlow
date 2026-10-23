@@ -254,8 +254,6 @@ export async function PATCH(request) {
             );
         }
 
-        console.log("Mark as picked_up : ", body)
-
         const user_id = userid[0].user_id;
 
         await db.query(`UPDATE deliveries SET status = ? WHERE id = ? AND volunteer_id = ?`, [body.status, body.deliveryId, user_id]);

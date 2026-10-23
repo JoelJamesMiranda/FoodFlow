@@ -60,9 +60,6 @@ export default function Login() {
         }
     };
 
-
-    console.log("Login - ", form)
-
     return (
         <AuthLayout
             title="Welcome back"
