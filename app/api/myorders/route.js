@@ -100,15 +100,24 @@ export async function GET() {
 
         INNER JOIN users AS volunteer
             ON volunteer.id = deliveries.volunteer_id
-
-        LEFT JOIN volunteer_locations AS volLoc
-            ON volLoc.id = (
-                SELECT vl.id
-                FROM volunteer_locations AS vl
-                WHERE vl.volunteer_id = deliveries.volunteer_id
-                ORDER BY vl.recorded_at DESC, vl.id DESC
-                LIMIT 1
-            )
+            LEFT JOIN (
+                SELECT
+                    volunteer_id,
+                    latitude,
+                    longitude,
+                    recorded_at
+                FROM (
+                    SELECT
+                        vl.*,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY vl.volunteer_id
+                            ORDER BY vl.recorded_at DESC, vl.id DESC
+                        ) AS rn
+                    FROM volunteer_locations AS vl
+                ) AS ranked
+                WHERE rn = 1
+            ) AS volLoc
+                ON volLoc.volunteer_id = deliveries.volunteer_id
 
         WHERE claims.receiver_id = ?
           AND claims.status IN (
